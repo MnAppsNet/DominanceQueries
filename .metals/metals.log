@@ -2758,3 +2758,197 @@ INFO: Unsupported notification method: $/setTrace
 2023.01.02 18:05:59 INFO  time: Imported build in 0.29s[0m
 2023.01.02 18:06:01 INFO  time: code lens generation in 5.2s[0m
 2023.01.02 18:06:03 INFO  time: indexed workspace in 4.22s[0m
+Jan 02, 2023 6:07:35 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+2023.01.02 18:30:14 INFO  Deduplicating compilation of sample from bsp client 'Metals 0.11.9' (since 24m 15.236s)[0m
+2023.01.02 18:30:14 INFO  tracing is disabled for protocol dap-server, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/mnapps/DominanceQueries/.metals/dap-server.trace.json or /home/mnapps/.cache/metals/dap-server.trace.json[0m
+2023.01.02 18:30:14 INFO  tracing is disabled for protocol dap-client, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/mnapps/DominanceQueries/.metals/dap-client.trace.json or /home/mnapps/.cache/metals/dap-client.trace.json[0m
+2023.01.02 18:30:15 INFO  Starting debug proxy for [DominanceQueries.DominanceQueries][0m
+2023.01.02 18:30:17 INFO  Trying to attach to remote debuggee VM localhost:37537 .[0m
+2023.01.02 18:30:17 INFO  Attaching to debuggee VM succeeded.[0m
+2023.01.02 18:30:17 ERROR Using Spark's default log4j profile: org/apache/spark/log4j2-defaults.properties[0m
+2023.01.02 18:30:21 ERROR WARNING: An illegal reflective access operation has occurred[0m
+2023.01.02 18:30:21 ERROR WARNING: Illegal reflective access by org.apache.spark.unsafe.Platform (file:/home/mnapps/.cache/coursier/v1/https/repo1.maven.org/maven2/org/apache/spark/spark-unsafe_2.13/3.3.1/spark-unsafe_2.13-3.3.1.jar) to constructor java.nio.DirectByteBuffer(long,int)[0m
+2023.01.02 18:30:21 ERROR WARNING: Please consider reporting this to the maintainers of org.apache.spark.unsafe.Platform[0m
+2023.01.02 18:30:21 ERROR WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations[0m
+2023.01.02 18:30:21 ERROR WARNING: All illegal access operations will be denied in a future release[0m
+2023.01.02 18:30:23 ERROR Exception in thread "main" org.apache.spark.SparkException: Job aborted due to stage failure: Task 1 in stage 0.0 failed 1 times, most recent failure: Lost task 1.0 in stage 0.0 (TID 1) (172.25.120.128 executor driver): org.apache.spark.SparkException: This RDD lacks a SparkContext. It could happen in the following cases: [0m
+2023.01.02 18:30:23 ERROR (1) RDD transformations and actions are NOT invoked by the driver, but inside of other transformations; for example, rdd1.map(x => rdd2.values.count() * x) is invalid because the values transformation and count action cannot be performed inside of the rdd1.map transformation. For more information, see SPARK-5063.[0m
+2023.01.02 18:30:23 ERROR (2) When a Spark Streaming job recovers from checkpoint, this exception will be hit if a reference to an RDD not defined by the streaming job is used in DStream operations. For more information, See SPARK-13758.[0m
+2023.01.02 18:30:23 ERROR 	at org.apache.spark.errors.SparkCoreErrors$.rddLacksSparkContextError(SparkCoreErrors.scala:105)[0m
+2023.01.02 18:30:23 ERROR 	at org.apache.spark.rdd.RDD.sc(RDD.scala:96)[0m
+2023.01.02 18:30:23 ERROR 	at org.apache.spark.rdd.RDD.withScope(RDD.scala:406)[0m
+2023.01.02 18:30:23 ERROR 	at org.apache.spark.rdd.RDD.filter(RDD.scala:430)[0m
+2023.01.02 18:30:23 ERROR 	at DominanceQueries.DominanceQueries$.$anonfun$main$3(DominanceQueries.scala:52)[0m
+2023.01.02 18:30:23 ERROR 	at scala.collection.Iterator$$anon$9.next(Iterator.scala:584)[0m
+2023.01.02 18:30:23 ERROR 	at scala.collection.Iterator$$anon$6.hasNext(Iterator.scala:478)[0m
+2023.01.02 18:30:23 ERROR 	at org.apache.spark.util.Utils$.getIteratorSize(Utils.scala:1931)[0m
+2023.01.02 18:30:23 ERROR 	at org.apache.spark.rdd.RDD.$anonfun$count$1(RDD.scala:1274)[0m
+2023.01.02 18:30:23 ERROR 	at org.apache.spark.rdd.RDD.$anonfun$count$1$adapted(RDD.scala:1274)[0m
+2023.01.02 18:30:23 ERROR 	at org.apache.spark.SparkContext.$anonfun$runJob$5(SparkContext.scala:2268)[0m
+2023.01.02 18:30:23 ERROR 	at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:90)[0m
+2023.01.02 18:30:23 ERROR 	at org.apache.spark.scheduler.Task.run(Task.scala:136)[0m
+2023.01.02 18:30:23 ERROR 	at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$3(Executor.scala:548)[0m
+2023.01.02 18:30:23 ERROR 	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:1504)[0m
+2023.01.02 18:30:23 ERROR 	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:551)[0m
+2023.01.02 18:30:23 ERROR 	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)[0m
+2023.01.02 18:30:23 ERROR 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)[0m
+2023.01.02 18:30:23 ERROR 	at java.base/java.lang.Thread.run(Thread.java:829)[0m
+2023.01.02 18:30:23 ERROR [0m
+2023.01.02 18:30:23 ERROR Driver stacktrace:[0m
+2023.01.02 18:30:23 ERROR 	at org.apache.spark.scheduler.DAGScheduler.failJobAndIndependentStages(DAGScheduler.scala:2672)[0m
+2023.01.02 18:30:23 ERROR 	at org.apache.spark.scheduler.DAGScheduler.$anonfun$abortStage$2(DAGScheduler.scala:2608)[0m
+2023.01.02 18:30:23 ERROR 	at org.apache.spark.scheduler.DAGScheduler.$anonfun$abortStage$2$adapted(DAGScheduler.scala:2607)[0m
+2023.01.02 18:30:23 ERROR 	at scala.collection.immutable.List.foreach(List.scala:333)[0m
+2023.01.02 18:30:23 ERROR 	at org.apache.spark.scheduler.DAGScheduler.abortStage(DAGScheduler.scala:2607)[0m
+2023.01.02 18:30:23 ERROR 	at org.apache.spark.scheduler.DAGScheduler.$anonfun$handleTaskSetFailed$1(DAGScheduler.scala:1182)[0m
+2023.01.02 18:30:23 ERROR 	at org.apache.spark.scheduler.DAGScheduler.$anonfun$handleTaskSetFailed$1$adapted(DAGScheduler.scala:1182)[0m
+2023.01.02 18:30:23 ERROR 	at scala.Option.foreach(Option.scala:437)[0m
+2023.01.02 18:30:23 ERROR 	at org.apache.spark.scheduler.DAGScheduler.handleTaskSetFailed(DAGScheduler.scala:1182)[0m
+2023.01.02 18:30:23 ERROR 	at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.doOnReceive(DAGScheduler.scala:2860)[0m
+2023.01.02 18:30:23 ERROR 	at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.onReceive(DAGScheduler.scala:2802)[0m
+2023.01.02 18:30:23 ERROR 	at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.onReceive(DAGScheduler.scala:2791)[0m
+2023.01.02 18:30:23 ERROR 	at org.apache.spark.util.EventLoop$$anon$1.run(EventLoop.scala:49)[0m
+2023.01.02 18:30:23 ERROR 	at org.apache.spark.scheduler.DAGScheduler.runJob(DAGScheduler.scala:952)[0m
+2023.01.02 18:30:23 ERROR 	at org.apache.spark.SparkContext.runJob(SparkContext.scala:2228)[0m
+2023.01.02 18:30:23 ERROR 	at org.apache.spark.SparkContext.runJob(SparkContext.scala:2249)[0m
+2023.01.02 18:30:23 ERROR 	at org.apache.spark.SparkContext.runJob(SparkContext.scala:2268)[0m
+2023.01.02 18:30:23 ERROR 	at org.apache.spark.SparkContext.runJob(SparkContext.scala:2293)[0m
+2023.01.02 18:30:23 ERROR 	at org.apache.spark.rdd.RDD.count(RDD.scala:1274)[0m
+2023.01.02 18:30:23 ERROR 	at DominanceQueries.DominanceQueries$.main(DominanceQueries.scala:61)[0m
+2023.01.02 18:30:23 ERROR 	at DominanceQueries.DominanceQueries.main(DominanceQueries.scala)[0m
+2023.01.02 18:30:23 ERROR Caused by: org.apache.spark.SparkException: This RDD lacks a SparkContext. It could happen in the following cases: [0m
+2023.01.02 18:30:23 ERROR (1) RDD transformations and actions are NOT invoked by the driver, but inside of other transformations; for example, rdd1.map(x => rdd2.values.count() * x) is invalid because the values transformation and count action cannot be performed inside of the rdd1.map transformation. For more information, see SPARK-5063.[0m
+2023.01.02 18:30:23 ERROR (2) When a Spark Streaming job recovers from checkpoint, this exception will be hit if a reference to an RDD not defined by the streaming job is used in DStream operations. For more information, See SPARK-13758.[0m
+2023.01.02 18:30:23 ERROR 	at org.apache.spark.errors.SparkCoreErrors$.rddLacksSparkContextError(SparkCoreErrors.scala:105)[0m
+2023.01.02 18:30:23 ERROR 	at org.apache.spark.rdd.RDD.sc(RDD.scala:96)[0m
+2023.01.02 18:30:23 ERROR 	at org.apache.spark.rdd.RDD.withScope(RDD.scala:406)[0m
+2023.01.02 18:30:23 ERROR 	at org.apache.spark.rdd.RDD.filter(RDD.scala:430)[0m
+2023.01.02 18:30:23 ERROR 	at DominanceQueries.DominanceQueries$.$anonfun$main$3(DominanceQueries.scala:52)[0m
+2023.01.02 18:30:23 ERROR 	at scala.collection.Iterator$$anon$9.next(Iterator.scala:584)[0m
+2023.01.02 18:30:23 ERROR 	at scala.collection.Iterator$$anon$6.hasNext(Iterator.scala:478)[0m
+2023.01.02 18:30:23 ERROR 	at org.apache.spark.util.Utils$.getIteratorSize(Utils.scala:1931)[0m
+2023.01.02 18:30:23 ERROR 	at org.apache.spark.rdd.RDD.$anonfun$count$1(RDD.scala:1274)[0m
+2023.01.02 18:30:23 ERROR 	at org.apache.spark.rdd.RDD.$anonfun$count$1$adapted(RDD.scala:1274)[0m
+2023.01.02 18:30:23 ERROR 	at org.apache.spark.SparkContext.$anonfun$runJob$5(SparkContext.scala:2268)[0m
+2023.01.02 18:30:23 ERROR 	at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:90)[0m
+2023.01.02 18:30:23 ERROR 	at org.apache.spark.scheduler.Task.run(Task.scala:136)[0m
+2023.01.02 18:30:23 ERROR 	at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$3(Executor.scala:548)[0m
+2023.01.02 18:30:23 ERROR 	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:1504)[0m
+2023.01.02 18:30:23 ERROR 	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:551)[0m
+2023.01.02 18:30:23 ERROR 	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)[0m
+2023.01.02 18:30:23 ERROR 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)[0m
+2023.01.02 18:30:23 ERROR 	at java.base/java.lang.Thread.run(Thread.java:829)[0m
+2023.01.02 18:30:23 INFO  Closing debug server tcp://0.0.0.0:39429[0m
+2023.01.02 18:30:24 INFO  Canceling debug proxy for [DominanceQueries.DominanceQueries][0m
+2023.01.02 18:30:41 INFO  Deduplicating compilation of sample from bsp client 'Metals 0.11.9' (since 24m 42.234s)[0m
+2023.01.02 18:30:41 INFO  tracing is disabled for protocol dap-server, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/mnapps/DominanceQueries/.metals/dap-server.trace.json or /home/mnapps/.cache/metals/dap-server.trace.json[0m
+2023.01.02 18:30:41 INFO  tracing is disabled for protocol dap-client, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/mnapps/DominanceQueries/.metals/dap-client.trace.json or /home/mnapps/.cache/metals/dap-client.trace.json[0m
+2023.01.02 18:30:41 INFO  Starting debug proxy for [DominanceQueries.DominanceQueries][0m
+2023.01.02 18:30:43 INFO  Trying to attach to remote debuggee VM localhost:39913 .[0m
+2023.01.02 18:30:43 INFO  Attaching to debuggee VM succeeded.[0m
+2023.01.02 18:30:43 ERROR Using Spark's default log4j profile: org/apache/spark/log4j2-defaults.properties[0m
+2023.01.02 18:30:46 ERROR WARNING: An illegal reflective access operation has occurred[0m
+2023.01.02 18:30:46 ERROR WARNING: Illegal reflective access by org.apache.spark.unsafe.Platform (file:/home/mnapps/.cache/coursier/v1/https/repo1.maven.org/maven2/org/apache/spark/spark-unsafe_2.13/3.3.1/spark-unsafe_2.13-3.3.1.jar) to constructor java.nio.DirectByteBuffer(long,int)[0m
+2023.01.02 18:30:46 ERROR WARNING: Please consider reporting this to the maintainers of org.apache.spark.unsafe.Platform[0m
+2023.01.02 18:30:46 ERROR WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations[0m
+2023.01.02 18:30:46 ERROR WARNING: All illegal access operations will be denied in a future release[0m
+2023.01.02 18:30:48 ERROR Exception in thread "main" org.apache.spark.SparkException: Job aborted due to stage failure: Task 1 in stage 0.0 failed 1 times, most recent failure: Lost task 1.0 in stage 0.0 (TID 1) (172.25.120.128 executor driver): org.apache.spark.SparkException: This RDD lacks a SparkContext. It could happen in the following cases: [0m
+2023.01.02 18:30:48 ERROR (1) RDD transformations and actions are NOT invoked by the driver, but inside of other transformations; for example, rdd1.map(x => rdd2.values.count() * x) is invalid because the values transformation and count action cannot be performed inside of the rdd1.map transformation. For more information, see SPARK-5063.[0m
+2023.01.02 18:30:48 ERROR (2) When a Spark Streaming job recovers from checkpoint, this exception will be hit if a reference to an RDD not defined by the streaming job is used in DStream operations. For more information, See SPARK-13758.[0m
+2023.01.02 18:30:48 ERROR 	at org.apache.spark.errors.SparkCoreErrors$.rddLacksSparkContextError(SparkCoreErrors.scala:105)[0m
+2023.01.02 18:30:48 ERROR 	at org.apache.spark.rdd.RDD.sc(RDD.scala:96)[0m
+2023.01.02 18:30:48 ERROR 	at org.apache.spark.rdd.RDD.withScope(RDD.scala:406)[0m
+2023.01.02 18:30:48 ERROR 	at org.apache.spark.rdd.RDD.filter(RDD.scala:430)[0m
+2023.01.02 18:30:48 ERROR 	at DominanceQueries.DominanceQueries$.$anonfun$main$3(DominanceQueries.scala:52)[0m
+2023.01.02 18:30:48 ERROR 	at scala.collection.Iterator$$anon$9.next(Iterator.scala:584)[0m
+2023.01.02 18:30:48 ERROR 	at scala.collection.Iterator$$anon$6.hasNext(Iterator.scala:478)[0m
+2023.01.02 18:30:48 ERROR 	at org.apache.spark.util.Utils$.getIteratorSize(Utils.scala:1931)[0m
+2023.01.02 18:30:48 ERROR 	at org.apache.spark.rdd.RDD.$anonfun$count$1(RDD.scala:1274)[0m
+2023.01.02 18:30:48 ERROR 	at org.apache.spark.rdd.RDD.$anonfun$count$1$adapted(RDD.scala:1274)[0m
+2023.01.02 18:30:48 ERROR 	at org.apache.spark.SparkContext.$anonfun$runJob$5(SparkContext.scala:2268)[0m
+2023.01.02 18:30:48 ERROR 	at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:90)[0m
+2023.01.02 18:30:48 ERROR 	at org.apache.spark.scheduler.Task.run(Task.scala:136)[0m
+2023.01.02 18:30:48 ERROR 	at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$3(Executor.scala:548)[0m
+2023.01.02 18:30:48 ERROR 	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:1504)[0m
+2023.01.02 18:30:48 ERROR 	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:551)[0m
+2023.01.02 18:30:48 ERROR 	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)[0m
+2023.01.02 18:30:48 ERROR 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)[0m
+2023.01.02 18:30:48 ERROR 	at java.base/java.lang.Thread.run(Thread.java:829)[0m
+2023.01.02 18:30:48 ERROR [0m
+2023.01.02 18:30:48 ERROR Driver stacktrace:[0m
+2023.01.02 18:30:48 ERROR 	at org.apache.spark.scheduler.DAGScheduler.failJobAndIndependentStages(DAGScheduler.scala:2672)[0m
+2023.01.02 18:30:48 ERROR 	at org.apache.spark.scheduler.DAGScheduler.$anonfun$abortStage$2(DAGScheduler.scala:2608)[0m
+2023.01.02 18:30:48 ERROR 	at org.apache.spark.scheduler.DAGScheduler.$anonfun$abortStage$2$adapted(DAGScheduler.scala:2607)[0m
+2023.01.02 18:30:48 ERROR 	at scala.collection.immutable.List.foreach(List.scala:333)[0m
+2023.01.02 18:30:48 ERROR 	at org.apache.spark.scheduler.DAGScheduler.abortStage(DAGScheduler.scala:2607)[0m
+2023.01.02 18:30:48 ERROR 	at org.apache.spark.scheduler.DAGScheduler.$anonfun$handleTaskSetFailed$1(DAGScheduler.scala:1182)[0m
+2023.01.02 18:30:48 ERROR 	at org.apache.spark.scheduler.DAGScheduler.$anonfun$handleTaskSetFailed$1$adapted(DAGScheduler.scala:1182)[0m
+2023.01.02 18:30:48 ERROR 	at scala.Option.foreach(Option.scala:437)[0m
+2023.01.02 18:30:48 ERROR 	at org.apache.spark.scheduler.DAGScheduler.handleTaskSetFailed(DAGScheduler.scala:1182)[0m
+2023.01.02 18:30:48 ERROR 	at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.doOnReceive(DAGScheduler.scala:2860)[0m
+2023.01.02 18:30:48 ERROR 	at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.onReceive(DAGScheduler.scala:2802)[0m
+2023.01.02 18:30:48 ERROR 	at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.onReceive(DAGScheduler.scala:2791)[0m
+2023.01.02 18:30:48 ERROR 	at org.apache.spark.util.EventLoop$$anon$1.run(EventLoop.scala:49)[0m
+2023.01.02 18:30:48 ERROR 	at org.apache.spark.scheduler.DAGScheduler.runJob(DAGScheduler.scala:952)[0m
+2023.01.02 18:30:48 ERROR 	at org.apache.spark.SparkContext.runJob(SparkContext.scala:2228)[0m
+2023.01.02 18:30:48 ERROR 	at org.apache.spark.SparkContext.runJob(SparkContext.scala:2249)[0m
+2023.01.02 18:30:48 ERROR 	at org.apache.spark.SparkContext.runJob(SparkContext.scala:2268)[0m
+2023.01.02 18:30:48 ERROR 	at org.apache.spark.SparkContext.runJob(SparkContext.scala:2293)[0m
+2023.01.02 18:30:48 ERROR 	at org.apache.spark.rdd.RDD.count(RDD.scala:1274)[0m
+2023.01.02 18:30:48 ERROR 	at DominanceQueries.DominanceQueries$.main(DominanceQueries.scala:61)[0m
+2023.01.02 18:30:48 ERROR 	at DominanceQueries.DominanceQueries.main(DominanceQueries.scala)[0m
+2023.01.02 18:30:48 ERROR Caused by: org.apache.spark.SparkException: This RDD lacks a SparkContext. It could happen in the following cases: [0m
+2023.01.02 18:30:48 ERROR (1) RDD transformations and actions are NOT invoked by the driver, but inside of other transformations; for example, rdd1.map(x => rdd2.values.count() * x) is invalid because the values transformation and count action cannot be performed inside of the rdd1.map transformation. For more information, see SPARK-5063.[0m
+2023.01.02 18:30:48 ERROR (2) When a Spark Streaming job recovers from checkpoint, this exception will be hit if a reference to an RDD not defined by the streaming job is used in DStream operations. For more information, See SPARK-13758.[0m
+2023.01.02 18:30:48 ERROR 	at org.apache.spark.errors.SparkCoreErrors$.rddLacksSparkContextError(SparkCoreErrors.scala:105)[0m
+2023.01.02 18:30:48 ERROR 	at org.apache.spark.rdd.RDD.sc(RDD.scala:96)[0m
+2023.01.02 18:30:48 ERROR 	at org.apache.spark.rdd.RDD.withScope(RDD.scala:406)[0m
+2023.01.02 18:30:48 ERROR 	at org.apache.spark.rdd.RDD.filter(RDD.scala:430)[0m
+2023.01.02 18:30:48 ERROR 	at DominanceQueries.DominanceQueries$.$anonfun$main$3(DominanceQueries.scala:52)[0m
+2023.01.02 18:30:48 ERROR 	at scala.collection.Iterator$$anon$9.next(Iterator.scala:584)[0m
+2023.01.02 18:30:48 ERROR 	at scala.collection.Iterator$$anon$6.hasNext(Iterator.scala:478)[0m
+2023.01.02 18:30:48 ERROR 	at org.apache.spark.util.Utils$.getIteratorSize(Utils.scala:1931)[0m
+2023.01.02 18:30:48 ERROR 	at org.apache.spark.rdd.RDD.$anonfun$count$1(RDD.scala:1274)[0m
+2023.01.02 18:30:48 ERROR 	at org.apache.spark.rdd.RDD.$anonfun$count$1$adapted(RDD.scala:1274)[0m
+2023.01.02 18:30:48 ERROR 	at org.apache.spark.SparkContext.$anonfun$runJob$5(SparkContext.scala:2268)[0m
+2023.01.02 18:30:48 ERROR 	at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:90)[0m
+2023.01.02 18:30:48 ERROR 	at org.apache.spark.scheduler.Task.run(Task.scala:136)[0m
+2023.01.02 18:30:48 ERROR 	at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$3(Executor.scala:548)[0m
+2023.01.02 18:30:48 ERROR 	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:1504)[0m
+2023.01.02 18:30:48 ERROR 	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:551)[0m
+2023.01.02 18:30:48 ERROR 	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)[0m
+2023.01.02 18:30:48 ERROR 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)[0m
+2023.01.02 18:30:48 ERROR 	at java.base/java.lang.Thread.run(Thread.java:829)[0m
+2023.01.02 18:30:48 INFO  Canceling debug proxy for [DominanceQueries.DominanceQueries][0m
+2023.01.02 18:30:48 INFO  Closing debug server tcp://0.0.0.0:39465[0m
+Jan 02, 2023 6:30:48 PM org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer fireError
+SEVERE: java.net.SocketException: Socket closed
+org.eclipse.lsp4j.jsonrpc.JsonRpcException: java.net.SocketException: Socket closed
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageConsumer.consume(StreamMessageConsumer.java:72)
+	at scala.meta.internal.metals.debug.SocketEndpoint.consume(SocketEndpoint.scala:22)
+	at scala.meta.internal.metals.debug.MessageIdAdapter.consume(MessageIdAdapter.scala:43)
+	at scala.meta.internal.metals.debug.ServerAdapter.send(ServerAdapter.scala:30)
+	at scala.meta.internal.metals.debug.DebugProxy.$anonfun$handleClientMessage$1(DebugProxy.scala:146)
+	at scala.meta.internal.metals.debug.MessageIdAdapter.$anonfun$listen$1(MessageIdAdapter.scala:57)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.handleMessage(StreamMessageProducer.java:194)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.listen(StreamMessageProducer.java:94)
+	at scala.meta.internal.metals.debug.SocketEndpoint.listen(SocketEndpoint.scala:26)
+	at scala.meta.internal.metals.debug.MessageIdAdapter.listen(MessageIdAdapter.scala:47)
+	at scala.meta.internal.metals.debug.DebugProxy.$anonfun$listenToClient$1(DebugProxy.scala:65)
+	at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.scala:18)
+	at scala.concurrent.Future$.$anonfun$apply$1(Future.scala:678)
+	at scala.concurrent.impl.Promise$Transformation.run(Promise.scala:467)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+Caused by: java.net.SocketException: Socket closed
+	at java.base/java.net.SocketOutputStream.socketWrite(SocketOutputStream.java:113)
+	at java.base/java.net.SocketOutputStream.write(SocketOutputStream.java:150)
+	at java.base/java.io.BufferedOutputStream.flushBuffer(BufferedOutputStream.java:81)
+	at java.base/java.io.BufferedOutputStream.flush(BufferedOutputStream.java:142)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageConsumer.consume(StreamMessageConsumer.java:69)
+	... 16 more
+
+2023.01.02 18:31:30 INFO  compiling sample (1 scala source)[0m
+2023.01.02 18:31:33 INFO  time: compiled sample in 3.3s[0m

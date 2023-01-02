@@ -48,18 +48,7 @@ object DominanceQueries {
         )
 
         //Get the number of dominators for each point
-        val pointDominations = data.map{ point1 =>
-            val dominators = data.filter{ point2 =>
-                point1 != point2 && point1.dominatedBy(point2)
-            }
-            (point1,dominators.isEmpty())
-        }
-
-        val notDominated = pointDominations.filter(_._2)
-
-        //Print all the non dominated points
-        println(log+"Dominated points : " + notDominated.count())
-        notDominated.foreach(e => println(log+"X:"+e._1.coordinates(0)+"Y:"+e._1.coordinates(1)))
+        
 
         sc.stop()
     }
