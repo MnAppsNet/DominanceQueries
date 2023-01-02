@@ -1,19 +1,12 @@
 package DominanceQueries
 
+import Tools._
 import org.apache.spark.SparkContext._
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.rdd.RDD
+import scala.collection.mutable.ArrayBuffer
 
 object DominanceQueries {
-
-    val log = ">>>> " //Used to identify the logging that comes from our code
-
-    case class Point(coordinates: Array[Double]) {
-        //Check if point is dominated by the given point
-        def dominatedBy(point: Point): Boolean = {
-            this.coordinates.zip(point.coordinates).forall { case (x, y) => x <= y }
-        }
-    }
 
     def main(args: Array[String]): Unit = {
 
@@ -24,7 +17,7 @@ object DominanceQueries {
         //Get data file path :
         val currentDir = System.getProperty("user.dir")
         val file = currentDir + "/" + fileName
-        println(log+"Data File : " + file)
+        log("Data File : " + file)
 
         // Create spark configuration
         val sparkConfig = new SparkConf()
@@ -43,12 +36,25 @@ object DominanceQueries {
         //>> Line format : Point(X.XXXX,Y.YYYY,Z.ZZZZ,...  , domination_flag{true/false})
         //>> RDD[Point]
         val i = 1
-        val data = rawData.map(rawLine => 
-            Point(rawLine.split(",").map(_.toDouble))
-        )
+        val data = rawData.map{rawLine => 
+            val point = Point(rawLine.split(",").map(_.toDouble),0)
+            point.getSum()
+            point
+        }
 
-        //Get the number of dominators for each point
-        
+        //Task 1 :
+        //Sort the points based on the sum of all their dimensions
+        val sortedData = data.sortBy(_.sum, ascending = true)
+
+        //Take a quick look at the state of the data
+        //log("First 5 points sorted by the sum of their coordinates :\n----------")
+        //sortedData.take(5).foreach(e => log(e.getString()))
+
+        //Get skyline points
+        val skyline = new Skyline(new ArrayBuffer[Point](),0)
+        val res = sortedData.map(e => ( skyline.checkPoint(e)))
+        //Show Skyline points
+        res.sortBy(_.i,ascending = false).first().print()
 
         sc.stop()
     }
