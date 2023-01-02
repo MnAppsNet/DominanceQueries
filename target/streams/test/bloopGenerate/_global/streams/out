@@ -1,0 +1,4 @@
+[debug] [sample-test] Classpath dependencies List()
+[debug] [sample-test] Dependencies from configurations List(sample)
+[debug] Bloop wrote the configuration of project 'sample-test' to '/home/mnapps/DominanceQueries/.bloop/sample-test.json'
+[success] Generated .bloop/sample-test.json
