@@ -1,6 +1,6 @@
 {
-    "dataFile":"datasets/anti-corelated.s1000.e0.5.d3.csv",
+    "dataFile":"datasets/corelated.s1000.e0.5.d2.csv",
     "outputFolder":"results",
-    "topKpoints":3,
+    "topKpoints":10,
     "verbose":true
 }

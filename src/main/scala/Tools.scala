@@ -82,7 +82,7 @@ object Tools {
             savePoints(points,path)
         }
         def isSkyline(point:Point):Boolean = {
-            points.exists(e => e.coordinates.zip(point.coordinates).forall(e => e._2 == e._1))
+            points.exists(e => e.coordinates.zip(point.coordinates).forall(e => e._1 == e._2))
         }
     }
 

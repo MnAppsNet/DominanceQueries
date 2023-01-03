@@ -54,12 +54,11 @@ object DominanceQueries {
         //Sort the points based on the sum of all their dimensions
         val sortedData = data.sortBy(_.sum, ascending = true)
 
-
         //Task 1 - Get skyline points
         val skyline = new Skyline(new ArrayBuffer[Point](),0)
         val skylineBC = sc.broadcast(skyline) //Broadcast the instance of Skyline that will handle the calculations
         sortedData.map(e => (skylineBC.value.checkPoint(e))) //Check each point in the RDD if it is in skyline
-                  .count()  //An action is needed in order to execute the calculations in the broadcasted instance, that's why we do a count
+                  .cache().count()  //An action is needed in order to execute the calculations in the broadcasted instance, that's why we do a count
         skylineBC.value.print(verbose)
         skylineBC.value.save(task1File)
 
@@ -74,13 +73,15 @@ object DominanceQueries {
 
         //Task 2 - Get the top k points with most dominations
         val topPoints = dominations.take(topKpoints).map(_._1)
+        log("Get the top k points with most dominations",verbose)
         printPoints(topPoints,verbose)
         savePoints(topPoints,task2File)
 
-        //Task 2 - Get the top k points with most dominations
+        //Task 2 - Get the top k skyline points with most dominations
         val topSkylinePoints = dominations.filter(_._3).take(topKpoints).map(_._1)
-        printPoints(topPoints,verbose)
-        savePoints(topPoints,task3File)
+        log("Get the top k skyline points with most dominations",verbose)
+        printPoints(topSkylinePoints,verbose)
+        savePoints(topSkylinePoints,task3File)
         
         //Task 3 - Get the top k points with most dominations from the skyline points
         skylineBC.destroy()
