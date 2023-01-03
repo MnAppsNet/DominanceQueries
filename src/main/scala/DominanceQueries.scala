@@ -47,21 +47,21 @@ object DominanceQueries {
             point.getSum()
             point
         }
-
-        //Task 1 :
         //Sort the points based on the sum of all their dimensions
         val sortedData = data.sortBy(_.sum, ascending = true)
 
-        //Take a quick look at the state of the data
-        //log("First 5 points sorted by the sum of their coordinates :\n----------")
-        //sortedData.take(5).foreach(e => log(e.getString()))
 
-        //Get skyline points
+        //Task 1 - Get skyline points
         val skyline = new Skyline(new ArrayBuffer[Point](),0)
-        val res = sortedData.map(e => ( skyline.checkPoint(e)))     //Check each point in the RDD if it is in skyline
-                            .sortBy(_.i,ascending = false).first()  //Get the last entry of the RDD which should contain all the skyline points
-        res.print(verbose)
-        res.save(task1File)
+        val skylineBC = sc.broadcast(skyline) //Broadcast the instance of Skyline that will handle the calculations
+        sortedData.map(e => 
+            {
+                val skl = skylineBC.value
+                ( skl.checkPoint(e))        //Check each point in the RDD if it is in skyline
+            }).count()                      //An action is needed in order to execute the calculations, that's why we do a count
+        skylineBC.value.print(verbose)
+        skylineBC.value.save(task1File)
+        skylineBC.destroy()
 
         sc.stop()
     }
