@@ -54,11 +54,8 @@ object DominanceQueries {
         //Task 1 - Get skyline points
         val skyline = new Skyline(new ArrayBuffer[Point](),0)
         val skylineBC = sc.broadcast(skyline) //Broadcast the instance of Skyline that will handle the calculations
-        sortedData.map(e => 
-            {
-                val skl = skylineBC.value
-                ( skl.checkPoint(e))        //Check each point in the RDD if it is in skyline
-            }).count()                      //An action is needed in order to execute the calculations, that's why we do a count
+        sortedData.map(e => (skylineBC.value.checkPoint(e))) //Check each point in the RDD if it is in skyline
+                  .count()  //An action is needed in order to execute the calculations in the broadcasted instance, that's why we do a count
         skylineBC.value.print(verbose)
         skylineBC.value.save(task1File)
         skylineBC.destroy()
