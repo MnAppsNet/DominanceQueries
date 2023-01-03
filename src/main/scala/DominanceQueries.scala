@@ -26,7 +26,7 @@ object DominanceQueries {
 
         // Create spark configuration
         val sparkConfig = new SparkConf()
-        .setMaster("local[2]")
+        .setMaster("local[4]")
         .setAppName("DominanceQueries")
 
         // create spark context
