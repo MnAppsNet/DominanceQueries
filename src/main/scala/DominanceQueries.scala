@@ -10,9 +10,14 @@ object DominanceQueries {
 
     def main(args: Array[String]): Unit = {
 
+        val datasets = (
+            "anti-corelated.s1000.e0.5.d3.csv", //Anti-Correlated , 1000 samples , 0.5 entropy , 3 dimensions
+            "corelated.s1000.e0.5.d2.csv"       //Correlated      , 1000 samples , 0.5 entropy , 2 dimensions
+            )
+
         //Config :
         val verbose = true
-        val inputFile = "corelated.s1000.e0.5.csv"
+        val inputFile = datasets._1
         val outputFileTask1 = "task1.csv"
         val outputFileTask2 = "task2.csv"
         val outputFileTask3 = "task3.csv"

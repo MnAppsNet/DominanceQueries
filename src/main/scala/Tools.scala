@@ -31,7 +31,7 @@ object Tools {
                 var j = 0
                 while(loop){
                     if (point.dominates(points(j))){
-                        points -= points(j) //Point is dominated, it's not a skyline point
+                        points.remove(j) //Point is dominated, it's not a skyline point
                         j -= 1
                     }
                     else if (points(j).dominates(point)) {
