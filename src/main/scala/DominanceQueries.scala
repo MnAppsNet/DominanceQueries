@@ -65,23 +65,22 @@ object DominanceQueries {
         skylineBC.value.save(task1File)
 
         //Get the dominations of each point
-        //>> Line format : (Point(X.XXXX,Y.YYYY,Z.ZZZZ,...) , number of dominations
-        //RDD[(Point,Long)]
         val pointDominations = new PointDominations(sortedData)
         val pointDominationsBC = sc.broadcast(pointDominations) //Bradcast the class that is used to calculate the dominations
-        val lookupWindow = 2*topKpoints //The top points in dominations will probably have the smallest sums
-        val dominations = sortedData.filter(_._2 <= lookupWindow).map( e => (e._1,pointDominationsBC.value.getDominations(e._1)))
-                                    .sortBy(_._2,ascending=false) //Sort from most to less dominations
-                                    .cache()
-                                    
+
         //Task 2 - Get the top k points with most dominations
-        val topPoints = dominations.take(topKpoints).map(_._1)
+        val lookupWindow = 2*topKpoints //The top points in dominations will probably have the smallest sums
+        val topPoints = sortedData.filter(_._2 <= lookupWindow).map( e => (e._1,pointDominationsBC.value.getDominations(e._1)))
+                                    .sortBy(_._2,ascending=false) //Sort from most to less dominations
+                                    .take(topKpoints).map(_._1)
         log("Get the top k points with most dominations",verbose)
         printPoints(topPoints,verbose)
         savePoints(topPoints,task2File)
 
         //Task 2 - Get the top k skyline points with most dominations
-        val topSkylinePoints = dominations.filter(e=>skylineBC.value.isSkyline(e._1)).take(topKpoints).map(_._1)
+        val topSkylinePoints = sortedData.filter(e=>skylineBC.value.isSkyline(e._1)).map( e => (e._1,pointDominationsBC.value.getDominations(e._1)))
+                                    .sortBy(_._2,ascending=false) //Sort from most to less dominations
+                                    .take(topKpoints).map(_._1)
         log("Get the top k skyline points with most dominations",verbose)
         printPoints(topSkylinePoints,verbose)
         savePoints(topSkylinePoints,task3File)
