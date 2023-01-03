@@ -4,7 +4,6 @@ import scala.collection.mutable.ArrayBuffer
 import java.io.File
 import java.io.BufferedWriter
 import java.io.FileWriter
-import org.apache.arrow.flatbuf.Bool
 
 object Tools {
 
