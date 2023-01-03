@@ -26,8 +26,8 @@ A simple python script, visualize.py was created in order to plot together two d
     Arguments:
 	    -h, --help 
 		    show this help message and exit
-	    -d DATA, --data 
-		    DATA Data to plot
+	    -d DATA, --data DATA 
+            Data to plot
 	    -l HIGHLIGHT, --highlight HIGHLIGHT
 		    Data to highlight
 	    -s SAMPLES, --samples SAMPLES
