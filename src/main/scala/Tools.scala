@@ -1,9 +1,11 @@
 package DominanceQueries
 
 import scala.collection.mutable.ArrayBuffer
+import scala.io.Source
 import java.io.File
 import java.io.BufferedWriter
 import java.io.FileWriter
+import scala.util.parsing.json.JSON
 
 object Tools {
 
@@ -16,6 +18,10 @@ object Tools {
     def getPath(fileName:String):String = {
         val currentDir = System.getProperty("user.dir")
         currentDir + "/" + fileName
+    }
+    
+    def readSettings(settingsPath:String):Option[Any] = {
+        JSON.parseFull(Source.fromFile(getPath(settingsPath)).mkString)
     }
 
     case class Skyline(var points: ArrayBuffer[Point], var i:Int){

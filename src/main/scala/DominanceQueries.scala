@@ -5,29 +5,27 @@ import org.apache.spark.SparkContext._
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.rdd.RDD
 import scala.collection.mutable.ArrayBuffer
+import java.nio.file.Files
+import java.nio.file.Paths
 
 object DominanceQueries {
 
     def main(args: Array[String]): Unit = {
 
-        val datasets = (
-            "anti-corelated.s1000.e0.5.d3.csv", //Anti-Correlated , 1000 samples , 0.5 entropy , 3 dimensions
-            "corelated.s1000.e0.5.d2.csv"       //Correlated      , 1000 samples , 0.5 entropy , 2 dimensions
-            )
+        val settings = readSettings("settings.json").asInstanceOf[Option[Map[String,Any]]].get
 
         //Config :
-        val verbose = true
-        val inputFile = datasets._1
-        val outputFileTask1 = "task1.csv"
-        val outputFileTask2 = "task2.csv"
-        val outputFileTask3 = "task3.csv"
+        val verbose = settings.get("verbose").asInstanceOf[Option[Boolean]].get
+        val inputFile = settings.get("dataFile").asInstanceOf[Option[String]].get
+        val outputFolder = getPath(settings.get("outputFolder").asInstanceOf[Option[String]].get)
 
+        Files.createDirectories(Paths.get(outputFolder));
 
         //Get file paths :
         val dataFile = getPath(inputFile)
-        val task1File = getPath(outputFileTask1)
-        val task2File = getPath(outputFileTask2)
-        val task3File = getPath(outputFileTask3)
+        val task1File = outputFolder + "/task1.csv"
+        val task2File = outputFolder + "/task2.csv"
+        val task3File = outputFolder + "/task3.csv"
 
         // Create spark configuration
         val sparkConfig = new SparkConf()
