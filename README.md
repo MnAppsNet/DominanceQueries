@@ -40,3 +40,5 @@ A simple python script, visualize.py, was created in order to plot together two 
 		    Data to highlight
 	    -s SAMPLES, --samples SAMPLES
 		    Samples to visualise. Set 0 to use all of them.
+        -o OUTPUT, --output OUTPUT
+            Define where to save the plot, if not provided it is not saved
