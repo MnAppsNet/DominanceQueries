@@ -11,13 +11,18 @@ object DominanceQueries {
     def main(args: Array[String]): Unit = {
 
         //Config :
-        val dim = 2
-        val fileName = "corelated.s1000.e0.5.csv"
+        val verbose = true
+        val inputFile = "corelated.s1000.e0.5.csv"
+        val outputFileTask1 = "task1.csv"
+        val outputFileTask2 = "task2.csv"
+        val outputFileTask3 = "task3.csv"
 
-        //Get data file path :
-        val currentDir = System.getProperty("user.dir")
-        val file = currentDir + "/" + fileName
-        log("Data File : " + file)
+
+        //Get file paths :
+        val dataFile = getPath(inputFile)
+        val task1File = getPath(outputFileTask1)
+        val task2File = getPath(outputFileTask2)
+        val task3File = getPath(outputFileTask3)
 
         // Create spark configuration
         val sparkConfig = new SparkConf()
@@ -27,10 +32,11 @@ object DominanceQueries {
         // create spark context
         val sc = new SparkContext(sparkConfig)
         
-        //Read CSV into an RDD 
+        //Read CSV into an RDD
         //>> Line format : X.XXXX,Y.YYYY,Z.ZZZZ,...
         //>> RDD[String]
-        val rawData = sc.textFile(file)
+        log("Reading file '" + dataFile + "'...",verbose)
+        val rawData = sc.textFile(dataFile)
 
         //Split the RDD raw string lines into instances of point class
         //>> Line format : Point(X.XXXX,Y.YYYY,Z.ZZZZ,...  , domination_flag{true/false})
@@ -52,9 +58,10 @@ object DominanceQueries {
 
         //Get skyline points
         val skyline = new Skyline(new ArrayBuffer[Point](),0)
-        val res = sortedData.map(e => ( skyline.checkPoint(e)))
-        //Show Skyline points
-        res.sortBy(_.i,ascending = false).first().print()
+        val res = sortedData.map(e => ( skyline.checkPoint(e)))     //Check each point in the RDD if it is in skyline
+                            .sortBy(_.i,ascending = false).first()  //Get the last entry of the RDD which should contain all the skyline points
+        res.print(verbose)
+        res.save(task1File)
 
         sc.stop()
     }

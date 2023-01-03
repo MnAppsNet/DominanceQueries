@@ -1,12 +1,22 @@
 package DominanceQueries
 
 import scala.collection.mutable.ArrayBuffer
+import java.io.File
+import java.io.BufferedWriter
+import java.io.FileWriter
+import org.apache.arrow.flatbuf.Bool
 
 object Tools {
 
-    def log(msg:String){
+    def log(msg:String,verbose:Boolean = false):Unit ={
+        if (!verbose) return
         val id = ">>>> " //Used to identify the logging that comes from our code
         print(Console.BLUE+" "+id+Console.GREEN+" "+msg+"\n")
+    }
+
+    def getPath(fileName:String):String = {
+        val currentDir = System.getProperty("user.dir")
+        currentDir + "/" + fileName
     }
 
     case class Skyline(var points: ArrayBuffer[Point], var i:Int){
@@ -37,11 +47,20 @@ object Tools {
                 this
             }
         }
-        def print():Unit = {
+        def print(verbose:Boolean):Unit = {
             log("Skyline Points :")
             for(e <- points){
-                log(e.getString())
+                log(e.getString(),verbose)
             }
+        }
+        def save(path:String):Unit = {
+            log("Task 1 results saved in file '"+path+"'...")
+            val file = new File(path)
+            val bw = new BufferedWriter(new FileWriter(file))
+            for (e <- points) {
+                bw.write(e.getString(false)+"\n")
+            }
+            bw.close()
         }
     }
 
@@ -57,8 +76,10 @@ object Tools {
                     this.sum = this.sum + coordinates(i)
                 }
             }
-            def getString():String = {
-                this.coordinates.mkString(",")+" (sum:"+sum.toString()+")"
+            def getString(withSums:Boolean = true):String = {
+                var res = this.coordinates.mkString(",")
+                if (withSums) res+" (sum:"+sum.toString()+")"
+                else res
             }
         }
 }
