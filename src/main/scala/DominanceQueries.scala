@@ -16,6 +16,7 @@ object DominanceQueries {
 
         //Config :
         val verbose = settings.get("verbose").asInstanceOf[Option[Boolean]].get
+        val topKpoints = settings.get("topKpoints").asInstanceOf[Option[Double]].get.toInt
         val inputFile = settings.get("dataFile").asInstanceOf[Option[String]].get
         val outputFolder = getPath(settings.get("outputFolder").asInstanceOf[Option[String]].get)
 
@@ -42,7 +43,7 @@ object DominanceQueries {
         val rawData = sc.textFile(dataFile)
 
         //Split the RDD raw string lines into instances of point class
-        //>> Line format : Point(X.XXXX,Y.YYYY,Z.ZZZZ,...  , domination_flag{true/false})
+        //>> Line format : Point(X.XXXX,Y.YYYY,Z.ZZZZ,...)
         //>> RDD[Point]
         val i = 1
         val data = rawData.map{rawLine => 
@@ -61,7 +62,29 @@ object DominanceQueries {
                   .count()  //An action is needed in order to execute the calculations in the broadcasted instance, that's why we do a count
         skylineBC.value.print(verbose)
         skylineBC.value.save(task1File)
+
+        //Get the dominations of each point
+        //>> Line format : (Point(X.XXXX,Y.YYYY,Z.ZZZZ,...) , number of dominations, skyline_flag{true/false})
+        //RDD[(Point,Long,Boolean)]
+        val pointDominations = new PointDominations(sortedData)
+        val pointDominationsBC = sc.broadcast(pointDominations) //Bradcast the class that is used to calculate the dominations
+        val dominations = sortedData.map(e => (e,pointDominationsBC.value.getDominations(e),skylineBC.value.isSkyline(e)))
+                                    .sortBy(_._2, ascending=false) //Sort from most to less dominations
+        dominations.cache() //Keep the calculations up to this point to avoid doing them multiple times
+
+        //Task 2 - Get the top k points with most dominations
+        val topPoints = dominations.take(topKpoints).map(_._1)
+        printPoints(topPoints,verbose)
+        savePoints(topPoints,task2File)
+
+        //Task 2 - Get the top k points with most dominations
+        val topSkylinePoints = dominations.filter(_._3).take(topKpoints).map(_._1)
+        printPoints(topPoints,verbose)
+        savePoints(topPoints,task3File)
+        
+        //Task 3 - Get the top k points with most dominations from the skyline points
         skylineBC.destroy()
+        pointDominationsBC.destroy()
 
         sc.stop()
     }

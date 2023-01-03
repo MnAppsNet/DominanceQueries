@@ -6,6 +6,8 @@ import java.io.File
 import java.io.BufferedWriter
 import java.io.FileWriter
 import scala.util.parsing.json.JSON
+import org.apache.spark.rdd.RDD
+import org.apache.spark.broadcast.Broadcast
 
 object Tools {
 
@@ -22,6 +24,26 @@ object Tools {
     
     def readSettings(settingsPath:String):Option[Any] = {
         JSON.parseFull(Source.fromFile(getPath(settingsPath)).mkString)
+    }
+    def savePoints(points:Array[Point],path:String):Unit = {
+        savePoints(ArrayBuffer.empty[Point]++points,path)
+    }
+    def savePoints(points:ArrayBuffer[Point],path:String):Unit = {
+        log("Task 1 results saved in file '"+path+"'...")
+        val file = new File(path)
+        val bw = new BufferedWriter(new FileWriter(file))
+        for (e <- points) {
+            bw.write(e.getString(false)+"\n")
+        }
+        bw.close()
+    }
+    def printPoints(points:Array[Point],verbose:Boolean){
+        printPoints(ArrayBuffer.empty[Point]++points,verbose)
+    }
+    def printPoints(points:ArrayBuffer[Point],verbose:Boolean){
+        for(e <- points){
+            log(e.getString(),verbose)
+        }
     }
 
     case class Skyline(var points: ArrayBuffer[Point], var i:Int){
@@ -54,18 +76,23 @@ object Tools {
         }
         def print(verbose:Boolean):Unit = {
             log("Skyline Points :")
-            for(e <- points){
-                log(e.getString(),verbose)
-            }
+            printPoints(points,verbose)
         }
         def save(path:String):Unit = {
-            log("Task 1 results saved in file '"+path+"'...")
-            val file = new File(path)
-            val bw = new BufferedWriter(new FileWriter(file))
-            for (e <- points) {
-                bw.write(e.getString(false)+"\n")
-            }
-            bw.close()
+            savePoints(points,path)
+        }
+        def isSkyline(point:Point):Boolean = {
+            points.exists(e => e.coordinates.zip(point.coordinates).forall(e => e._2 == e._1))
+        }
+    }
+
+    case class PointDominations(points:RDD[Point]){
+        def getDominations(point:Point):Long = {
+            //All possible dominations must have a sum of their coordinates 
+            //greater or equal than those of the given point
+            this.points.filter(e => e.sum >= point.sum)     //Get only the points with greater or equal sum
+                  .filter(e => point.dominates(e) )         //Get the points that are dominated by the given point
+                  .count( )                                 //Get the number of dominated points
         }
     }
 

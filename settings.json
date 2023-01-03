@@ -1,5 +1,6 @@
 {
     "dataFile":"datasets/anti-corelated.s1000.e0.5.d3.csv",
     "outputFolder":"results",
+    "topKpoints":3,
     "verbose":true
 }
