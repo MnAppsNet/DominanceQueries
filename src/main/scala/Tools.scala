@@ -86,12 +86,12 @@ object Tools {
         }
     }
 
-    case class PointDominations(points:RDD[Point]){
+    case class PointDominations(points:RDD[(Point,Long)]){
         def getDominations(point:Point):Long = {
             //All possible dominations must have a sum of their coordinates 
             //greater or equal than those of the given point
-            this.points.filter(e => e.sum >= point.sum)     //Get only the points with greater or equal sum
-                  .filter(e => point.dominates(e) )         //Get the points that are dominated by the given point
+            this.points.filter(e => e._1.sum >= point.sum)     //Get only the points with greater or equal sum
+                  .filter(e => point.dominates(e._1) )         //Get the points that are dominated by the given point
                   .count( )                                 //Get the number of dominated points
         }
     }

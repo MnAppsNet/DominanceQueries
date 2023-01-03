@@ -52,25 +52,28 @@ object DominanceQueries {
             point
         }
         //Sort the points based on the sum of all their dimensions
-        val sortedData = data.sortBy(_.sum, ascending = true)
+        //>> Line format : Point(X.XXXX,Y.YYYY,Z.ZZZZ,...) , Index
+        //>> RDD[Point,Long]
+        val sortedData = data.sortBy(_.sum, ascending = true).zipWithIndex.cache()
 
         //Task 1 - Get skyline points
         val skyline = new Skyline(new ArrayBuffer[Point](),0)
         val skylineBC = sc.broadcast(skyline) //Broadcast the instance of Skyline that will handle the calculations
-        sortedData.map(e => (skylineBC.value.checkPoint(e))) //Check each point in the RDD if it is in skyline
-                  .cache().count()  //An action is needed in order to execute the calculations in the broadcasted instance, that's why we do a count
+        sortedData.map(e => (skylineBC.value.checkPoint(e._1))) //Check each point in the RDD if it is in skyline
+                  .count()  //An action is needed in order to execute the calculations in the broadcasted instance, that's why we do a count
         skylineBC.value.print(verbose)
         skylineBC.value.save(task1File)
 
         //Get the dominations of each point
-        //>> Line format : (Point(X.XXXX,Y.YYYY,Z.ZZZZ,...) , number of dominations, skyline_flag{true/false})
-        //RDD[(Point,Long,Boolean)]
+        //>> Line format : (Point(X.XXXX,Y.YYYY,Z.ZZZZ,...) , number of dominations
+        //RDD[(Point,Long)]
         val pointDominations = new PointDominations(sortedData)
         val pointDominationsBC = sc.broadcast(pointDominations) //Bradcast the class that is used to calculate the dominations
-        val dominations = sortedData.map(e => (e,pointDominationsBC.value.getDominations(e),skylineBC.value.isSkyline(e)))
-                                    .sortBy(_._2, ascending=false) //Sort from most to less dominations
-        dominations.cache() //Keep the calculations up to this point to avoid doing them multiple times
-
+        val lookupWindow = 2*topKpoints //The top points in dominations will probably have the smallest sums
+        val dominations = sortedData.filter(_._2 <= lookupWindow).map( e => (e._1,pointDominationsBC.value.getDominations(e._1)))
+                                    .sortBy(_._2,ascending=false) //Sort from most to less dominations
+                                    .cache()
+                                    
         //Task 2 - Get the top k points with most dominations
         val topPoints = dominations.take(topKpoints).map(_._1)
         log("Get the top k points with most dominations",verbose)
@@ -78,7 +81,7 @@ object DominanceQueries {
         savePoints(topPoints,task2File)
 
         //Task 2 - Get the top k skyline points with most dominations
-        val topSkylinePoints = dominations.filter(_._3).take(topKpoints).map(_._1)
+        val topSkylinePoints = dominations.filter(e=>skylineBC.value.isSkyline(e._1)).take(topKpoints).map(_._1)
         log("Get the top k skyline points with most dominations",verbose)
         printPoints(topSkylinePoints,verbose)
         savePoints(topSkylinePoints,task3File)
