@@ -1,6 +1,8 @@
 {
     "dataFile":"datasets/anti-corelated.s1000.e0.5.d2.csv",
-    "outputFolder":"results",
+    "task1ResultsOutput":"results/task1.anti-corelated.s1000.e0.5.d2.csv",
+    "task2ResultsOutput":"results/task2.anti-corelated.s1000.e0.5.d2.csv",
+    "task3ResultsOutput":"results/task3.anti-corelated.s1000.e0.5.d2.csv",
     "topKpoints":10,
     "verbose":true
 }

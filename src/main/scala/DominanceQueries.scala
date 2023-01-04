@@ -5,8 +5,6 @@ import org.apache.spark.SparkContext._
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.rdd.RDD
 import scala.collection.mutable.ArrayBuffer
-import java.nio.file.Files
-import java.nio.file.Paths
 
 object DominanceQueries {
 
@@ -18,15 +16,12 @@ object DominanceQueries {
         val verbose = settings.get("verbose").asInstanceOf[Option[Boolean]].get
         val topKpoints = settings.get("topKpoints").asInstanceOf[Option[Double]].get.toInt
         val inputFile = settings.get("dataFile").asInstanceOf[Option[String]].get
-        val outputFolder = getPath(settings.get("outputFolder").asInstanceOf[Option[String]].get)
-
-        Files.createDirectories(Paths.get(outputFolder));
 
         //Get file paths :
         val dataFile = getPath(inputFile)
-        val task1File = outputFolder + "/task1.csv"
-        val task2File = outputFolder + "/task2.csv"
-        val task3File = outputFolder + "/task3.csv"
+        val task1File = getPath(settings.get("task1ResultsOutput").asInstanceOf[Option[String]].get)
+        val task2File = getPath(settings.get("task2ResultsOutput").asInstanceOf[Option[String]].get)
+        val task3File = getPath(settings.get("task3ResultsOutput").asInstanceOf[Option[String]].get)
 
         // Create spark configuration
         val sparkConfig = new SparkConf()
