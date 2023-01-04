@@ -17,6 +17,14 @@ dataPoints = int(args.samples) #Collect only some of points for visualization pu
 data = pd.read_csv(args.data,dtype=float,header=None)
 highlight = pd.read_csv(args.highlight,dtype=float,header=None)
 
+data['sum'] = data.sum(axis=1)
+highlight['sum'] = highlight.sum(axis=1)
+
+data = data.sort_values(by=['sum'],ascending=True)
+highlight = highlight.sort_values(by=['sum'],ascending=True)
+
+data = pd.merge(data,highlight, indicator=True, how='outer').query('_merge=="left_only"').drop('_merge', axis=1)
+
 if dataPoints > 0:
     data = data.head(dataPoints)
     highlight = highlight.head(dataPoints)

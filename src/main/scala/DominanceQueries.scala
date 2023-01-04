@@ -71,7 +71,7 @@ object DominanceQueries {
         val pointDominationsBC = sc.broadcast(pointDominations) //Bradcast the class that is used to calculate the dominations
 
         //Task 2 - Get the top k points with most dominations
-        val lookupWindow = 2*topKpoints //The top points in dominations will probably have the smallest sums
+        val lookupWindow = skylineBC.value.points.length + topKpoints //The top points in dominations will probably have the smallest sums
         val topPoints = sortedData.filter(_._2 <= lookupWindow).map( e => (e._1,pointDominationsBC.value.getDominations(e._1)))
                                     .sortBy(_._2,ascending=false) //Sort from most to less dominations
                                     .take(topKpoints).map(_._1)
