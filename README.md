@@ -24,10 +24,9 @@ The program is reading the file settings.json that must be at the root of the pr
     "verbose":true/false
     }
 
-
 ### Visualize script
 
-A simple python script, visualize.py, was created in order to plot together two datasets in the same scatter plot with different colors. We do that in order to visualize the skyline points in a plot.
+A simple python script, visualize.py, was created in order to plot together two datasets in the same scatter plot with different colors. We do that in order to visualize the results of the different tasks in a plot.
 
 **Usage:**
     
@@ -42,3 +41,18 @@ A simple python script, visualize.py, was created in order to plot together two 
 		    Samples to visualise. Set 0 to use all of them.
         -o OUTPUT, --output OUTPUT
             Define where to save the plot, if not provided it is not saved
+
+
+### Bruteforce script
+
+The python script, bruteforce.py, was created in order to get the results of the required tasks using brute-force method. We do that in order to validate the results of the spark implementation. Please don't run this script with many data because your PC will explode.
+
+**Usage:**
+
+    Arguments:
+    -h, --help 
+	    show this help message and exit
+    -d DATA, --data DATA 
+	    Input data to process
+    -t TOP, --top TOP 
+	    Number of top points in terms of dominations

@@ -1,3 +1,9 @@
+#
+# This script is used to visualise two datasets in the same
+# plot with different colors. Used to visualize the results
+# of the different tasks.
+#
+
 import pandas as pd, matplotlib.pyplot as plt, argparse
 
 parser = argparse.ArgumentParser()

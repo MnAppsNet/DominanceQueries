@@ -7,7 +7,7 @@
 import pandas as pd, argparse
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-d", "--data", help = "Data to plot", default=None)
+parser.add_argument("-d", "--data", help = "Input data to process", default=None)
 parser.add_argument("-t", "--top", help = "Number of top points in terms of dominations", default=None)
 
 args = parser.parse_args()
@@ -41,6 +41,6 @@ for i in range(lines):
             if (dominates(data.loc[j,:],data.loc[i,:])):
                 data.loc[i, "skl"] = False #Not a skyline point, it is dominated
 
-data.loc[data["skl"] == True].to_csv("skyline_points.csv")
-data.sort_values(by="dom",ascending=False).head(top).to_csv("topk_points.csv")
-data.loc[data["skl"] == True].sort_values(by="dom",ascending=False).head(top).to_csv("topk_skyline_points.csv")
+data.loc[data["skl"] == True].to_csv("skyline_points.csv",header=False,index=False)
+data.sort_values(by="dom",ascending=False).head(top).to_csv("topk_points.csv",header=False,index=False)
+data.loc[data["skl"] == True].sort_values(by="dom",ascending=False).head(top).to_csv("topk_skyline_points.csv",header=False,index=False)
