@@ -15,6 +15,7 @@ object DominanceQueries {
         //Config :
         val verbose = settings.get("verbose").asInstanceOf[Option[Boolean]].get
         val topKpoints = settings.get("topKpoints").asInstanceOf[Option[Double]].get.toInt
+        val cores = settings.get("cores").asInstanceOf[Option[Double]].get.toInt
         val inputFile = settings.get("dataFile").asInstanceOf[Option[String]].get
 
         //Get file paths :
@@ -25,12 +26,16 @@ object DominanceQueries {
 
         // Create spark configuration
         val sparkConfig = new SparkConf()
-        .setMaster("local[4]")
+        .setMaster("local["+cores.toString+"]")
         .setAppName("DominanceQueries")
 
         // create spark context
         val sc = new SparkContext(sparkConfig)
-        
+        sc.setLogLevel("WARN")
+
+        //Get starting time
+        var startedAt = System.nanoTime
+
         //Read CSV into an RDD
         //>> Line format : X.XXXX,Y.YYYY,Z.ZZZZ,...
         //>> RDD[String]
@@ -58,6 +63,8 @@ object DominanceQueries {
                   .count()  //An action is needed in order to execute the calculations in the broadcasted instance, that's why we do a count
         skylineBC.value.print(verbose)
         skylineBC.value.save(task1File)
+        log("Task 1 execution time : " + (System.nanoTime - startedAt) / 1e9d + " sec",true)
+        startedAt = System.nanoTime
 
         //Get the dominations of each point
         val pointDominations = new PointDominations(sortedData)
@@ -71,6 +78,8 @@ object DominanceQueries {
         log("Get the top k points with most dominations",verbose)
         printPoints(topPoints,verbose)
         savePoints(topPoints,task2File)
+        log("Task 2 execution time : " + (System.nanoTime - startedAt) / 1e9d + " sec",true)
+        startedAt = System.nanoTime
 
         //Task 2 - Get the top k skyline points with most dominations
         val topSkylinePoints = sortedData.filter(e=>skylineBC.value.isSkyline(e._1)).map( e => (e._1,pointDominationsBC.value.getDominations(e._1)))
@@ -79,6 +88,7 @@ object DominanceQueries {
         log("Get the top k skyline points with most dominations",verbose)
         printPoints(topSkylinePoints,verbose)
         savePoints(topSkylinePoints,task3File)
+        log("Task 3 execution time : " + (System.nanoTime - startedAt) / 1e9d + " sec",true)
         
         //Task 3 - Get the top k points with most dominations from the skyline points
         skylineBC.destroy()
