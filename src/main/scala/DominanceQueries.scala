@@ -9,8 +9,8 @@ import scala.collection.mutable.ArrayBuffer
 object DominanceQueries {
 
     def main(args: Array[String]): Unit = {
-
-        val settings = readSettings("settings.json").asInstanceOf[Option[Map[String,Any]]].get
+        
+        val settings = readSettings("settings.json")
 
         //Config :
         val verbose = settings.get("verbose").asInstanceOf[Option[Boolean]].get

@@ -22,8 +22,11 @@ object Tools {
         currentDir + "/" + fileName
     }
     
-    def readSettings(settingsPath:String):Option[Any] = {
-        JSON.parseFull(Source.fromFile(getPath(settingsPath)).mkString)
+    def readSettings(settingsPath:String):Map[String,Any] = {
+        val settings = JSON.parseFull(Source.fromFile(getPath(settingsPath)).mkString)
+                               .asInstanceOf[Option[Map[String,Any]]].get
+        val testCaseIndex = settings.get("activeTestCase").asInstanceOf[Option[Double]].get.toInt
+        settings.get("testCases").asInstanceOf[Option[List[Map[String,Any]]]].get(testCaseIndex)
     }
     def savePoints(points:Array[Point],path:String):Unit = {
         savePoints(ArrayBuffer.empty[Point]++points,path)

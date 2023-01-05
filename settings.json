@@ -1,11 +1,16 @@
 {
-    "cores":4,
-    "dataFile":"datasets/corelated.s1000.e0.5.d2.csv",
-    "task1ResultsOutput":"results/corelated.s1000.e0.5.d2/task1.csv",
-    "task2ResultsOutput":"results/corelated.s1000.e0.5.d2/task2.csv",
-    "task3ResultsOutput":"results/corelated.s1000.e0.5.d2/task3.csv",
-    "topKpoints":2,
-    "executeTask2":true,
-    "executeTask3":true,
-    "verbose":false
+    "activeTestCase":0,
+    "testCases":[
+        {
+            "cores":4,
+            "dataFile":"datasets/corelated.s1000.e0.5.d2.csv",
+            "task1ResultsOutput":"results/corelated.s1000.e0.5.d2/task1.csv",
+            "task2ResultsOutput":"results/corelated.s1000.e0.5.d2/task2.csv",
+            "task3ResultsOutput":"results/corelated.s1000.e0.5.d2/task3.csv",
+            "topKpoints":2,
+            "executeTask2":true,
+            "executeTask3":true,
+            "verbose":false
+        }
+    ]
 }
