@@ -1,11 +1,12 @@
 package DominanceQueries
 
+import ujson.read
+import ujson.Value
 import scala.collection.mutable.ArrayBuffer
 import scala.io.Source
 import java.io.File
 import java.io.BufferedWriter
 import java.io.FileWriter
-import scala.util.parsing.json.JSON
 import org.apache.spark.rdd.RDD
 import org.apache.spark.broadcast.Broadcast
 
@@ -22,11 +23,12 @@ object Tools {
         currentDir + "/" + fileName
     }
     
-    def readSettings(settingsPath:String):Map[String,Any] = {
-        val settings = JSON.parseFull(Source.fromFile(getPath(settingsPath)).mkString)
-                               .asInstanceOf[Option[Map[String,Any]]].get
-        val testCaseIndex = settings.get("activeTestCase").asInstanceOf[Option[Double]].get.toInt
-        settings.get("testCases").asInstanceOf[Option[List[Map[String,Any]]]].get(testCaseIndex)
+    def readSettings(settingsPath:String) = {
+        log("Settings file : "+getPath(settingsPath),true)
+        val json = Source.fromFile(getPath(settingsPath)).mkString
+        val settings = read(json)
+        val testCaseIndex = settings("activeTestCase").value.asInstanceOf[Double].toInt
+        settings("testCases").arr(testCaseIndex)
     }
     def savePoints(points:Array[Point],path:String):Unit = {
         savePoints(ArrayBuffer.empty[Point]++points,path)
@@ -61,14 +63,16 @@ object Tools {
                 var skylinePoint = true //Indicates whether the given point is skyline
                 var j = 0
                 while(loop){
-                    if (point.dominates(points(j))){
-                        points.remove(j) //Point is dominated, it's not a skyline point
-                        j -= 1
-                    }
-                    else if (points(j).dominates(point)) {
-                        j = points.length
-                        skylinePoint = false //The given point is dominated, don't keep it...
-                    }
+                    try{
+                        if (point.dominates(points(j))){
+                            points.remove(j) //Point is dominated, it's not a skyline point
+                            j -= 1
+                        }
+                        else if (points(j).dominates(point)) {
+                            j = points.length
+                            skylinePoint = false //The given point is dominated, don't keep it...
+                        }
+                    }catch{  case _: Throwable => }
                     j+=1
                     loop = j < points.length
                 }

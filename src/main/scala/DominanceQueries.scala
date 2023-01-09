@@ -1,6 +1,7 @@
 package DominanceQueries
 
 import Tools._
+import ujson.Value
 import org.apache.spark.SparkContext._
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.rdd.RDD
@@ -9,22 +10,25 @@ import scala.collection.mutable.ArrayBuffer
 object DominanceQueries {
 
     def main(args: Array[String]): Unit = {
-        
-        val settings = readSettings("settings.json")
+        var settingsFilePath = "settings.json"
+        if (args.length > 0){
+            settingsFilePath = args(0)
+        }
+        val settings = readSettings(settingsFilePath)
 
         //Config :
-        val verbose = settings.get("verbose").asInstanceOf[Option[Boolean]].get
-        val topKpoints = settings.get("topKpoints").asInstanceOf[Option[Double]].get.toInt
-        val cores = settings.get("cores").asInstanceOf[Option[Double]].get.toInt
-        val inputFile = settings.get("dataFile").asInstanceOf[Option[String]].get
-        val executeTask2 = settings.get("executeTask2").asInstanceOf[Option[Boolean]].get
-        val executeTask3 = settings.get("executeTask3").asInstanceOf[Option[Boolean]].get
+        val verbose = settings("verbose").value.asInstanceOf[Boolean]
+        val topKpoints = settings("topKpoints").value.asInstanceOf[Double].toInt
+        val cores = settings("cores").value.asInstanceOf[Double].toInt
+        val inputFile = settings("dataFile").value.asInstanceOf[String]
+        val executeTask2 = settings("executeTask2").value.asInstanceOf[Boolean]
+        val executeTask3 = settings("executeTask3").value.asInstanceOf[Boolean]
 
         //Get file paths :
         val dataFile = getPath(inputFile)
-        val task1File = getPath(settings.get("task1ResultsOutput").asInstanceOf[Option[String]].get)
-        val task2File = getPath(settings.get("task2ResultsOutput").asInstanceOf[Option[String]].get)
-        val task3File = getPath(settings.get("task3ResultsOutput").asInstanceOf[Option[String]].get)
+        val task1File = getPath(settings("task1ResultsOutput").value.asInstanceOf[String])
+        val task2File = getPath(settings("task2ResultsOutput").value.asInstanceOf[String])
+        val task3File = getPath(settings("task3ResultsOutput").value.asInstanceOf[String])
 
         // Create spark configuration
         val sparkConfig = new SparkConf()
@@ -33,7 +37,7 @@ object DominanceQueries {
 
         // create spark context
         val sc = new SparkContext(sparkConfig)
-        sc.setLogLevel("WARN")
+        sc.setLogLevel("OFF")
 
         //Get starting time
         var startedAt = System.nanoTime
