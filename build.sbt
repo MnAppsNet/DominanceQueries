@@ -12,4 +12,5 @@ lazy val sample = (project in file("."))
 assemblyMergeStrategy in assembly := {
   case PathList("META-INF", "MANIFEST.MF") => MergeStrategy.discard
   case _ => MergeStrategy.first
+  case PathList("log4j2*") => MergeStrategy.discard
 }

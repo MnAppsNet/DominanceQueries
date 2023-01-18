@@ -2,17 +2,16 @@
     "activeTestCase":0,
     "testCases":[
         {
-            "description":"Distribution: Corelated, Points: 1000, Dimensions: 2, Generated with entropy: 0.5",
+            "description":"Distribution: Corelated, Points: 1M, Dimensions: 3, Generated with entropy: 0.5",
             "cores":4,
-            "dataFile":"datasets/corelated.s1000.e0.5.d2.csv",
-            "task1ResultsOutput":"results/corelated.s1000.e0.5.d2/task1.csv",
-            "task2ResultsOutput":"results/corelated.s1000.e0.5.d2/task2.csv",
-            "task3ResultsOutput":"results/corelated.s1000.e0.5.d2/task3.csv",
+            "dataFile":"datasets/corelated.s1M.e0.5.d3.csv",
+            "task1ResultsOutput":"results/corelated.s1M.e0.5.d3/task1.csv",
+            "task2ResultsOutput":"results/corelated.s1M.e0.5.d3/task2.csv",
+            "task3ResultsOutput":"results/corelated.s1M.e0.5.d3/task3.csv",
             "topKpoints":2,
             "executeTask2":true,
             "executeTask3":true,
-            "verbose":false,
-            "generateDataset":"python generateDataset/generateCorrelatedDataset.py -s 1000 -d 2 -e 0.5 -o datasets/corelated.s1000.e0.5.d2.csv"
+            "verbose":false
         }
     ]
 }

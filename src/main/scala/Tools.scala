@@ -9,6 +9,8 @@ import java.io.BufferedWriter
 import java.io.FileWriter
 import org.apache.spark.rdd.RDD
 import org.apache.spark.broadcast.Broadcast
+import java.nio.file.Paths
+import java.nio.file.Files
 
 object Tools {
 
@@ -23,18 +25,23 @@ object Tools {
         currentDir + "/" + fileName
     }
     
-    def readSettings(settingsPath:String) = {
+    def readSettings(settingsPath:String, settingIndex:Int = -1) = {
         log("Settings file : "+getPath(settingsPath),true)
         val json = Source.fromFile(getPath(settingsPath)).mkString
         val settings = read(json)
-        val testCaseIndex = settings("activeTestCase").value.asInstanceOf[Double].toInt
+        var testCaseIndex = 0
+        if (settingIndex > -1)
+            testCaseIndex = settingIndex
+        else
+            testCaseIndex = settings("activeTestCase").value.asInstanceOf[Double].toInt
         settings("testCases").arr(testCaseIndex)
     }
     def savePoints(points:Array[Point],path:String):Unit = {
         savePoints(ArrayBuffer.empty[Point]++points,path)
     }
     def savePoints(points:ArrayBuffer[Point],path:String):Unit = {
-        log("Task 1 results saved in file '"+path+"'...")
+        log("Results saved in file '"+path+"'...",true)
+        Files.createDirectories(Paths.get(path).getParent());
         val file = new File(path)
         val bw = new BufferedWriter(new FileWriter(file))
         for (e <- points) {
