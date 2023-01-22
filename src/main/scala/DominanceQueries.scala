@@ -90,7 +90,8 @@ object DominanceQueries {
         //>> Line format : X.XXXX,Y.YYYY,Z.ZZZZ,...
         //>> RDD[String]
         log("File set for read : " + dataFile)
-        val rawData = sc.textFile(dataFile,5)
+        val minPartitions = cores * 2
+        val rawData = sc.textFile(dataFile,minPartitions)
 
         //Split the RDD raw string lines into instances of point class
         //>> Line format : Point(X.XXXX,Y.YYYY,Z.ZZZZ,...)
