@@ -30,6 +30,7 @@ data = data.sort_values(by=['sum'],ascending=True)
 highlight = highlight.sort_values(by=['sum'],ascending=True)
 
 data = pd.merge(data,highlight, indicator=True, how='outer').query('_merge=="left_only"').drop('_merge', axis=1)
+data = data.drop(columns='sum')
 
 if dataPoints > 0:
     data = data.head(dataPoints)
