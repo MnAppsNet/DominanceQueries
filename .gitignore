@@ -1,9 +1,11 @@
 /.bloop
 /.metals
 /.vscode
-/project
 /target
 /datasets
 /results
 /reports/NOSQL
+/project/.bloop
+/project/project
+/project/target
 DominanceQueries.jar
