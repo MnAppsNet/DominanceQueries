@@ -70,7 +70,6 @@ object Tools {
   def getSkylinePoints( sortedData:RDD[Point]): Iterator[Point] = {
     //Collect all the skyline points of each partition and find the
     //final set of skyline points among them
-    log("Calculating and collecting skyline points...")
     getSkylinePoints(
       sortedData.mapPartitions(getSkylinePoints)
                 .collect().toIterator)
@@ -140,7 +139,7 @@ object Tools {
       allPoints = allPoints.filter(x => x.index != topPoint.index)
       
       //Check for new canditate top points:
-        
+
       //Get all the points dominated by the topPoint
       val topPointsBC = sc.broadcast(topPoints) //Broadcast the existing top points to exclude from the check for new canditate top poitns
       val dominatedArea = allPoints.filter(p => topPoint.dominates(p))

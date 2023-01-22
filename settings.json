@@ -2,12 +2,22 @@
     "activeTestCase":0,
     "testCases":[
         {
-            "description":"Distribution: Anti-Corelated, Points: 1000, Dimensions: 2, Generated with entropy: 0.5",
+            "description":"Execute all tasks with the provided arguments",
+            "dataFile":"datasets/&NAME&.csv",
+            "task1ResultsOutput":"results/&NAME&/task1.csv",
+            "task2ResultsOutput":"results/&NAME&/task2.csv",
+            "task3ResultsOutput":"results/&NAME&/task3.csv",
+            "executeTask2":true,
+            "executeTask3":true
+        },
+        {
+            "description":"Distribution: Corelated, Points: 1000, Dimensions: 2, Generated with entropy: 0.5",
             "cores":4,
-            "dataFile":"datasets/anti-corelated.s1000.e0.5.d2.csv",
-            "task1ResultsOutput":"results/anti-corelated.s1000.e0.5.d2/task1.csv",
-            "task2ResultsOutput":"results/anti-corelated.s1000.e0.5.d2/task2.csv",
-            "task3ResultsOutput":"results/anti-corelated.s1000.e0.5.d2/task3.csv",
+            "testName":"anti-corelated.s1000.e0.5.d2",
+            "dataFile":"datasets/&NAME&.csv",
+            "task1ResultsOutput":"results/&NAME&/task1.csv",
+            "task2ResultsOutput":"results/&NAME&/task2.csv",
+            "task3ResultsOutput":"results/&NAME&/task3.csv",
             "topKpoints":10,
             "executeTask2":true,
             "executeTask3":true

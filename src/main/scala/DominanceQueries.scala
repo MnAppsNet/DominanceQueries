@@ -6,11 +6,26 @@ import org.apache.spark.SparkContext._
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.rdd.RDD
 import scala.collection.mutable.ArrayBuffer
+import ujson.Str
+import java.io.File
+import java.util.logging.LogManager
+
+import org.apache.log4j.Logger
+import org.apache.log4j.Level
 
 object DominanceQueries {
 
     def main(args: Array[String]): Unit = {
+        //Disable logging
+        Logger.getLogger("org").setLevel(Level.OFF) 
+        Logger.getLogger("akka").setLevel(Level.OFF)
+        Logger.getRootLogger().setLevel(Level.OFF)
 
+        //Possible arguments : settings path | test case index to load from settings | test name | number of top points requested | number of cpu cores to use
+        //If the settings path is not provided, the default is the settings.json file in the execution path
+        //If the rest of the arguments are not provided, they are gathered from the settings file
+
+        //Read arguments
         var settingsFilePath = "settings.json"
         if (args.length > 0){
             settingsFilePath = args(0)
@@ -19,23 +34,44 @@ object DominanceQueries {
         if (args.length > 1){
             settingIndex = args(1).toInt
         }
+        var testName:String = ""
+        if (args.length > 2){
+            testName = args(2)
+        }
+        var topKpoints:Int = -1
+        if (args.length > 3){
+            topKpoints = args(3).toInt
+        }
+        var cores = -1
+        if (args.length > 4){
+            cores = args(4).toInt
+        }
 
+        //Read settings
         val settings = readSettings(settingsFilePath,settingIndex)
+        try{
+            if (testName == "")
+                testName = settings("testName").value.asInstanceOf[String]
+            if (topKpoints == -1)
+                topKpoints = settings("topKpoints").value.asInstanceOf[Double].toInt
+            if (cores == 0)
+                cores = settings("cores").value.asInstanceOf[Double].toInt
+            if (cores < 1) cores = 1
 
-        //Config :
-        val topKpoints = settings("topKpoints").value.asInstanceOf[Double].toInt
-        val cores = settings("cores").value.asInstanceOf[Double].toInt
-        val inputFile = settings("dataFile").value.asInstanceOf[String]
-        val executeTask2 = settings("executeTask2").value.asInstanceOf[Boolean]
-        val executeTask3 = settings("executeTask3").value.asInstanceOf[Boolean]
-        //No option to execute task 1 because its result is needed for the other tasks
-
-        //Get file paths :
-        val dataFile = getPath(inputFile)
-        val task1File = getPath(settings("task1ResultsOutput").value.asInstanceOf[String])
-        val task2File = getPath(settings("task2ResultsOutput").value.asInstanceOf[String])
-        val task3File = getPath(settings("task3ResultsOutput").value.asInstanceOf[String])
-
+            val testNamePlaceholder = "&NAME&"
+            val inputFile = settings("dataFile").value.asInstanceOf[String].replace(testNamePlaceholder,testName)
+            val executeTask2 = settings("executeTask2").value.asInstanceOf[Boolean]
+            val executeTask3 = settings("executeTask3").value.asInstanceOf[Boolean]
+            //No option to execute task 1 because its result is needed for the other tasks
+            val dataFile = getPath(inputFile)
+            val task1File = getPath(settings("task1ResultsOutput").value.asInstanceOf[String]).replace(testNamePlaceholder,testName)
+            val task2File = getPath(settings("task2ResultsOutput").value.asInstanceOf[String]).replace(testNamePlaceholder,testName)
+            val task3File = getPath(settings("task3ResultsOutput").value.asInstanceOf[String]).replace(testNamePlaceholder,testName)
+        //Check if input data file exists
+        if (!(new File(inputFile)).exists()){
+            log("Data file '%s' doesn't exists".format(inputFile))
+            return
+        }
 
         // Create spark configuration
         val sparkConfig = new SparkConf()
@@ -101,5 +137,12 @@ object DominanceQueries {
         }
 
         sc.stop()
+    }
+    catch{ 
+            case x:java.util.NoSuchElementException => {
+                log("Issue with settings file or with the passed arguments")
+                return
+            }
+        }
     }
 }

@@ -3,4 +3,7 @@
 /.vscode
 /project
 /target
+/datasets
+/results
+/reports/NOSQL
 DominanceQueries.jar
