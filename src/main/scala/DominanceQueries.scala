@@ -73,6 +73,8 @@ object DominanceQueries {
             return
         }
 
+        log("Settings:\nDataset: "+inputFile+"\nTest Name: "+testName+"\nCores: "+cores.toString+"\nTop K: "+topKpoints.toString)
+
         // Create spark configuration
         val sparkConfig = new SparkConf()
         .setMaster("local["+cores.toString+"]")
@@ -90,8 +92,8 @@ object DominanceQueries {
         //>> Line format : X.XXXX,Y.YYYY,Z.ZZZZ,...
         //>> RDD[String]
         log("File set for read : " + dataFile)
-        val minPartitions = cores * 2
-        val rawData = sc.textFile(dataFile,minPartitions)
+        //val minPartitions = cores * 2
+        val rawData = sc.textFile(dataFile)//,minPartitions)
 
         //Split the RDD raw string lines into instances of point class
         //>> Line format : Point(X.XXXX,Y.YYYY,Z.ZZZZ,...)
