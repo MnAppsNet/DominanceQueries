@@ -1,7 +1,5 @@
 package DominanceQueries
 
-import ujson.read
-import ujson.Value
 import scala.io.Source
 import java.io.File
 import java.io.BufferedWriter
@@ -12,6 +10,7 @@ import java.nio.file.Paths
 import java.nio.file.Files
 import org.apache.spark.SparkContext
 import scala.collection.mutable.ArrayBuffer
+import scala.util.parsing.json.JSON
 
 object Tools {
 
@@ -46,14 +45,15 @@ object Tools {
   def readSettings(settingsPath: String, settingIndex: Int = -1) = {
     log("Reading settings file : " + getPath(settingsPath))
     val json = Source.fromFile(getPath(settingsPath)).mkString
-    val settings = read(json)
+    val settings = JSON.parseFull(json).get.asInstanceOf[Map[String, Any]]
+
     var testCaseIndex = 0
     if (settingIndex > -1)
       testCaseIndex = settingIndex
     else
-      testCaseIndex =
-        settings("activeTestCase").value.asInstanceOf[Double].toInt
-    settings("testCases").arr(testCaseIndex)
+      testCaseIndex = settings("activeTestCase").asInstanceOf[Double].toInt
+    val list = settings("testCases").asInstanceOf[List[Map[String, Any]]]
+    list(testCaseIndex)
   }
 
   def savePoints(points: ArrayBuffer[Point], path: String): Unit = {

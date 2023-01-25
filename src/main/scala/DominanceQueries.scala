@@ -1,17 +1,16 @@
 package DominanceQueries
 
 import Tools._
-import ujson.Value
 import org.apache.spark.SparkContext._
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.rdd.RDD
 import scala.collection.mutable.ArrayBuffer
-import ujson.Str
 import java.io.File
 import java.util.logging.LogManager
 
 import org.apache.log4j.Logger
 import org.apache.log4j.Level
+import org.apache.spark.sql.SparkSession
 
 object DominanceQueries {
 
@@ -46,27 +45,33 @@ object DominanceQueries {
         if (args.length > 4){
             cores = args(4).toInt
         }
+        var partitions = -1
+        if (args.length > 5){
+            partitions = args(5).toInt
+        }
 
         //Read settings
         val settings = readSettings(settingsFilePath,settingIndex)
         try{
             if (testName == "")
-                testName = settings("testName").value.asInstanceOf[String]
+                testName = settings("testName").asInstanceOf[String]
             if (topKpoints == -1)
-                topKpoints = settings("topKpoints").value.asInstanceOf[Double].toInt
+                topKpoints = settings("topKpoints").asInstanceOf[Double].toInt
             if (cores == 0)
-                cores = settings("cores").value.asInstanceOf[Double].toInt
+                cores = settings("cores").asInstanceOf[Double].toInt
             if (cores < 1) cores = 1
 
             val testNamePlaceholder = "&NAME&"
-            val inputFile = settings("dataFile").value.asInstanceOf[String].replace(testNamePlaceholder,testName)
-            val executeTask2 = settings("executeTask2").value.asInstanceOf[Boolean]
-            val executeTask3 = settings("executeTask3").value.asInstanceOf[Boolean]
+            val inputFile = settings("dataFile").asInstanceOf[String].replace(testNamePlaceholder,testName)
+            val executeTask2 = settings("executeTask2").asInstanceOf[Boolean]
+            val executeTask3 = settings("executeTask3").asInstanceOf[Boolean]
             //No option to execute task 1 because its result is needed for the other tasks
             val dataFile = getPath(inputFile)
-            val task1File = getPath(settings("task1ResultsOutput").value.asInstanceOf[String]).replace(testNamePlaceholder,testName)
-            val task2File = getPath(settings("task2ResultsOutput").value.asInstanceOf[String]).replace(testNamePlaceholder,testName)
-            val task3File = getPath(settings("task3ResultsOutput").value.asInstanceOf[String]).replace(testNamePlaceholder,testName)
+            val task1File = getPath(settings("task1ResultsOutput").asInstanceOf[String]).replace(testNamePlaceholder,testName)
+            val task2File = getPath(settings("task2ResultsOutput").asInstanceOf[String]).replace(testNamePlaceholder,testName)
+            val task3File = getPath(settings("task3ResultsOutput").asInstanceOf[String]).replace(testNamePlaceholder,testName)
+            if (settings.keys.exists( _ == "partitions"))
+                partitions = settings("partitions").asInstanceOf[Double].toInt
         //Check if input data file exists
         if (!(new File(inputFile)).exists()){
             log("Data file '%s' doesn't exists".format(inputFile))
@@ -81,10 +86,13 @@ object DominanceQueries {
         .setAppName("DominanceQueries")
 
         // create spark context
-        val sc = new SparkContext(sparkConfig)
+        val sc =  SparkContext.getOrCreate(sparkConfig)
+        if (sc == null){
+            log("Null spark context...")
+            return
+        }
+        
         sc.setLogLevel("OFF")
-
-        print("\u001b[2J")
 
         startTimer()
 
@@ -92,8 +100,12 @@ object DominanceQueries {
         //>> Line format : X.XXXX,Y.YYYY,Z.ZZZZ,...
         //>> RDD[String]
         log("File set for read : " + dataFile)
-        //val minPartitions = cores * 2
-        val rawData = sc.textFile(dataFile)//,minPartitions)
+        var rawData:RDD[String] = null
+        if (partitions == -1)
+            rawData = sc.textFile(dataFile)
+        else rawData = sc.textFile(dataFile,partitions)
+
+        log("Spark Context config:\nExecutors: "+sc.getExecutorMemoryStatus.keys.size.toString+"\nData partitions: "+rawData.partitions.length)
 
         //Split the RDD raw string lines into instances of point class
         //>> Line format : Point(X.XXXX,Y.YYYY,Z.ZZZZ,...)

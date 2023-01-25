@@ -4,9 +4,8 @@ ThisBuild / version          := "0.0.1"
 lazy val sample = (project in file("."))
   .settings(
     name := "DominanceQueries",
-    libraryDependencies += "org.apache.spark" %% "spark-core" % "3.2.2",
-    libraryDependencies += "org.apache.spark" %% "spark-sql" % "3.2.2",
-    libraryDependencies += "com.lihaoyi" %% "ujson" % "0.9.6"
+    libraryDependencies += "org.apache.spark" %% "spark-core" % "3.2.3",
+    libraryDependencies += "org.apache.spark" %% "spark-sql" % "3.2.3"
   )
 
 assemblyMergeStrategy in assembly := {
