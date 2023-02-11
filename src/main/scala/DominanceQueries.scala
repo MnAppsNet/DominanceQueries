@@ -105,7 +105,7 @@ object DominanceQueries {
             rawData = sc.textFile(dataFile)
         else rawData = sc.textFile(dataFile,partitions)
 
-        log("Spark Context config:\nExecutors: "+sc.getExecutorMemoryStatus.keys.size.toString+"\nData partitions: "+rawData.partitions.length)
+        log("Data partitions: "+rawData.partitions.length)
 
         //Split the RDD raw string lines into instances of point class
         //>> Line format : Point(X.XXXX,Y.YYYY,Z.ZZZZ,...)
